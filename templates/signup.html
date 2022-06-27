@@ -1,13 +1,35 @@
 
-{% block title %}Sign Page{% endblock title %}
+{% block title %}{% endblock title %}
 
 {% block content %}
     <h2>Sign Page</h2>
-    <form method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Register</button>
-        <br><br>
-        <a href="#">Home</a>
-    </form>
+<!--    <form method="post">-->
+<!--        {% csrf_token %}-->
+<!--        {{ form.as_p }}-->
+<!--        <button type="submit">Register</button>-->
+<!--        <br><br>-->
+<!--        <a href="#">Home</a>-->
+<!--    </form>-->
+<div class="contact-inner-form">
+				<form method="POST">
+					{% csrf_token %}
+                    <div class="col_half">
+                         <label for="register-form-name">Name:</label>
+                                {{ form.username }}
+                    </div>
+                    <div class="col_half">
+                         <label for="register-form-name">Email:</label>
+                                {{ form.email }}
+                    </div>
+                    <div class="col_half">
+                         <label for="register-form-name">Password:</label>
+                                {{ form.password1 }}
+                    </div>
+                    <div class="col_half">
+                         <label for="register-form-name">confirm Password:</label>
+                                {{ form.password2 }}
+                    </div>
+                     <button type="submit">SignUp</button>
+				</form>
+
 {% endblock content %}

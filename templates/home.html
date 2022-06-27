@@ -1,0 +1,15 @@
+<h1> Welcome To HomePage</h1>
+
+{{request.user.email}}
+<div>
+ <a href="{% url 'account:login' %}">
+    <button class="btn">
+        <i class="fa fa-add ">Login</i>
+    </button>
+ </a>
+<a href="{% url 'account:signup' %}">
+    <button class="btn">
+        <i class="fa fa-add ">SignUp</i>
+    </button>
+ </a>
+</div>
