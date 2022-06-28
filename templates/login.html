@@ -1,6 +1,9 @@
+{% extends 'base.html' %}
+
+{% block body %}
 <h1>Login Page</h1>
 {% if request.user.is_authenticated %}
-    <h1>USER ALREADY LOGGED IN:{{request.user.email}}</h1>
+    <h3>USER ALREADY LOGGED IN:{{request.user.email}}</h3>
     <div>
      <a href="{% url 'account:logout' %}">
         <button class="btn">
@@ -24,3 +27,4 @@
                 </form>
 </div>
 {% endif %}
+{% endblock %}
