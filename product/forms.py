@@ -17,9 +17,10 @@ class ProductsForm(forms.ModelForm):
         ]
         widgets = {
             "manufacturing_date": forms.DateInput(
-                format=("%m/%d/%Y"), attrs={"class": "form-control", "type": "date"}
-            ),
+                attrs={"class": "form-control", "type": "date"},
+
+                ),
             "expiry_date": forms.DateInput(
-                format=("%m/%d/%Y"), attrs={"class": "form-control", "type": "date"}
-            ),
+                attrs={"class": "form-control", "type": "date"}
+                ),
         }

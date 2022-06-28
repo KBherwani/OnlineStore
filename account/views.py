@@ -78,7 +78,8 @@ class ActivateAccount(View):
         except (TypeError, ValueError, OverflowError, User.DoesNotExist):
             user = None
 
-        if user is not None and account_activation_token.check_token(user, token):
+        if user is not None and account_activation_token.check_token(user,
+                                                                     token):
             user.is_active = True
             user.profile.email_confirmed = True
             user.save()
@@ -114,3 +115,6 @@ class LogoutView(FormView):
         logout(self.request)
         messages.success(self.request, "User logged out successfully.")
         return redirect("account:login")
+
+
+
