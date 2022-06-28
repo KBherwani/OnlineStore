@@ -1,7 +1,6 @@
+{% extends 'base.html' %}
 
-{% block title %}{% endblock title %}
-
-{% block content %}
+{% block body %}
     <h2>Sign Page</h2>
 <!--    <form method="post">-->
 <!--        {% csrf_token %}-->
@@ -10,17 +9,24 @@
 <!--        <br><br>-->
 <!--        <a href="#">Home</a>-->
 <!--    </form>-->
+{% if request.user.is_authenticated %}
+    <h3>USER ALREADY LOGGED IN:{{request.user.email}}</h3>
+    <div>
+     <a href="{% url 'account:logout' %}">
+        <button class="btn">
+            <i class="fa fa-add ">Logout</i>
+        </button>
+     </a>
+    </div>
+{% else %}
 <div class="contact-inner-form">
 				<form method="POST">
 					{% csrf_token %}
                     <div class="col_half">
-                         <label for="register-form-name">Name:</label>
-                                {{ form.username }}
-                    </div>
-                    <div class="col_half">
                          <label for="register-form-name">Email:</label>
                                 {{ form.email }}
                     </div>
+                    {{form.errors.email}}
                     <div class="col_half">
                          <label for="register-form-name">Password:</label>
                                 {{ form.password1 }}
@@ -31,5 +37,6 @@
                     </div>
                      <button type="submit">SignUp</button>
 				</form>
-
-{% endblock content %}
+</div>
+{% endif %}
+{% endblock %}

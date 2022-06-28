@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block body %}
+
+<h1>Products</h1>
+<div class="row">
+  {% for product in products %}
+  <div class="col-sm-6">
+    <div class="card" >
+      <div class="card-body">
+        <h5 class="card-title">Name : {{ product.name }}</h5>
+        <p class="card-text">Category : {{ product.category }}
+          <br>MFD : {{product.manufacturing_date}} to EXP : {{product.expiry_date}}</p>
+        <h5 class="card-title">Status : {{ product.status }}</h5>
+        <a href="{% url 'product:update_product' product.pk %}" class="btn btn-primary">Update Product</a>
+        <a href="{% url 'product:delete_product' product.pk %}" class="btn btn-danger">Delete Product</a>
+      </div>
+    </div>
+  </div>
+
+  {% endfor %}
+</div>
+<br>
+<div style="display: grid;">
+    <a href="{% url 'product:product_form'%}" class="btn btn-primary">Add Product</a>
+</div>
+{% endblock %}

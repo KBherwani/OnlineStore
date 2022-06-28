@@ -1,15 +1,14 @@
-<h1> Welcome To HomePage</h1>
-
-{{request.user.email}}
+{% extends 'base.html' %}
+{% block header %}
+    {% include 'header.html' %}
+{% endblock %}
+{% block body %}
+<h1>Online Store</h1>
 <div>
- <a href="{% url 'account:login' %}">
-    <button class="btn">
-        <i class="fa fa-add ">Login</i>
-    </button>
- </a>
-<a href="{% url 'account:signup' %}">
-    <button class="btn">
-        <i class="fa fa-add ">SignUp</i>
-    </button>
- </a>
+    <a href="{% url 'account:login' %}" class="btn btn-warning">Login</a>
+    <a href="{% url 'account:signup' %}" class="btn btn-success">SignUp</a>
 </div>
+    <br><a href="{% url 'product:product_list' %}" class="btn btn-dark">All Products</a>
+
+
+{% endblock %}
