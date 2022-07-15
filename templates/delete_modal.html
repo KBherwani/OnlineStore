@@ -1,0 +1,19 @@
+<div aria-hidden="true" aria-labelledby="DeleteModalCenterTitle"
+     class="modal fade delete-modal-js" id="deleteModalCenter"
+     role="dialog" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content" id="model-content-id"
+            style="align-items: center;">
+            <div class="modal-header">
+                <h5 class="modal-title" id="warning_delete_id"></h5>
+                <button aria-label="Close" class="close" data-dismiss="modal"
+                        type="button">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" >
+               <input id="delete_btn" class="btn btn-danger" type="submit" value="Confirm">
+               <a href="{% url 'product:product_list' %}" id="delete_success"class="btn btn-success">Cancel</a>
+            </div>
+        </div>
+    </div>

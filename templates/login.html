@@ -1,29 +1,31 @@
 {% extends 'base.html' %}
-
+{% block header %}
+    {% include 'header.html' %}
+{% endblock %}
 {% block body %}
 <h1>Login Page</h1>
+<div style="color:green">
+      {% if messages %}
+        {% for message in messages %}
+          {{ message }}
+        {% endfor %}
+      {% endif %}
+</div>
 {% if request.user.is_authenticated %}
     <h3>USER ALREADY LOGGED IN:{{request.user.email}}</h3>
-    <div>
-     <a href="{% url 'account:logout' %}">
-        <button class="btn">
-            <i class="fa fa-add ">Logout</i>
-        </button>
-     </a>
-    </div>
 {% else %}
     <div class="contact-inner-form">
 				<form method="POST">
 					{% csrf_token %}
                     <div class="col_half">
-                         <label for="register-form-name">Email:</label>
+                         <label>Email:</label>
                                 {{ form.email }}
                     </div>
                     <div class="col_half">
-                         <label for="register-form-name">Password:</label>
+                         <label>Password:</label>
                                 {{ form.password }}
                     </div>
-                     <button type="submit">Login</button>
+                     <button class="btn btn-success" type="submit">Login</button>
                 </form>
 </div>
 {% endif %}
