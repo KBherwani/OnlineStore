@@ -83,9 +83,8 @@ class ActivateAccount(View):
             user.is_active = True
             user.profile.email_confirmed = True
             user.save()
-            login(request, user)
             messages.success(request, ("Your account have been confirmed."))
-            return redirect("account:home")
+            return redirect("account:login")
         else:
             messages.warning(
                 request,
@@ -107,6 +106,8 @@ class LoginView(FormView):
         return redirect("account:home")
 
     def form_invalid(self, form):
+        messages.error(self.request,
+                         'Your account is Inactive. Please check your registered email for account activation.')
         return super().form_invalid(form)
 
 

@@ -1,27 +1,159 @@
-{% extends 'base.html' %}
-
+      {% extends 'base.html' %}
+    {% block header %}
+        {% include 'header.html' %}
+      {% endblock %}
+{% load static %}
 {% block body %}
+<!--HEADER-->
+  <div>
+    <div style="color:red">
+      {% if messages %}
+        {% for message in messages %}
+          {{ message }}
+        {% endfor %}
+      {% endif %}
+        </div>
 
-<h1>Products</h1>
-<div class="row">
-  {% for product in products %}
-  <div class="col-sm-6">
-    <div class="card" >
-      <div class="card-body">
-        <h5 class="card-title">Name : {{ product.name }}</h5>
-        <p class="card-text">Category : {{ product.category }}
-          <br>MFD : {{product.manufacturing_date}} to EXP : {{product.expiry_date}}</p>
-        <h5 class="card-title">Status : {{ product.status }}</h5>
-        <a href="{% url 'product:update_product' product.pk %}" class="btn btn-primary">Update Product</a>
-        <a href="{% url 'product:delete_product' product.pk %}" class="btn btn-danger">Delete Product</a>
+  </div>
+<!--Search-Bar for Products-->
+  <!-- search bar right align -->
+
+    <form action="{% url 'product:search'%}">
+
+        <div class="card-body row no-gutters align-items-center"
+             style="display: table-footer-group;">
+            <div class="col-auto">
+            </div>
+            <div class="col">
+                <input class="form-control form-control-lg
+                       form-control-borderless"
+                       type="search" placeholder="Search Product" name="search" value="{{search_keyword}}">
+            </div>
+                       <div class="col-auto">
+            </div>
+            <div class="col">
+                <button class="btn btn-lg btn-success"
+                        type="submit"> Search
+                </button>
+            </div>
+
+        </div>
+    </form>
+
+<!--ALL PRODUCTS DISPLAY AS BELOW-->
+  <div class="row">
+    {% for product in products %}
+    <div class="col-sm-6" id="product_card_{{product.pk}}" style="margin-top:20px;max-width: fit-content;">
+      <div class="card" >
+        <div class="card-body">
+            <div style="display: flex;">
+                <div>
+                    <img src="{% if not product.product_image %}
+                    {% static 'image/default-product.jpg' %}
+                    {% else %}{{ product.product_image.url }}
+                    {% endif %}" width="100" height="100">
+                </div>
+                <div style="margin-left:20px">
+                    <h5 class="card-title">Name : {{ product.name }}</h5><br>
+                    <h2 class="card-title" >₹{{ product.price }}</h2>
+                </div>
+            </div>
+            <button class="btn view_btn" id="viewbtn_{{product.pk}}"
+                    data-toggle='modal'
+                    data-target='exampleModalCenter_{{product.pk}}'
+                    data-id="{{product.pk}}"
+                    data-action-url="{% url 'product:view_product' %}"
+                    >
+                    <i class="fa fa-eye"></i> View
+            </button>
+          <a href="{% url 'product:update_product' product.pk %}">
+                </a>
+              <button class="btn delete_btn"
+                      id="viewbtn_{{product.pk}}"
+                      data-name="{{product.name}}"
+                      data-toggle='modal'
+                      data-target='exampleModalCenter_{{product.pk}}'
+                      data-id="{{product.pk}}"
+                      data-action-url="{% url 'product:delete_view' %}"
+              >
+              <i class="fa fa-trash"></i> Delete</button></a>
+        </div>
       </div>
     </div>
+    {% endfor %}
+  </div>
+  <br>
+  <div style="display: grid;">
+      <a href="{% url 'product:product_form'%}" class="btn btn-primary">Add Product</a>
   </div>
 
-  {% endfor %}
+<!-- Modal -->
+<div id="product_show_model">
 </div>
-<br>
-<div style="display: grid;">
-    <a href="{% url 'product:product_form'%}" class="btn btn-primary">Add Product</a>
+<div id="product_delete_show_model" >
+    {% include "delete_modal.html" %}
+</div>
+
 </div>
 {% endblock %}
+{% block extrajs %}
+<!--<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>-->
+     <script>
+    var csrf_token = '{{csrf_token}}'
+<!--  FOR VIEW MODAL POPUP  -->
+    $('.view_btn').on('click', function(e){
+        e.preventDefault();
+        e.stopImmediatePropagation();
+    // AJAX request
+        $.ajax({
+        url:  
+        type: 'post',
+        data: {'csrfmiddlewaretoken':csrf_token, 'pk': $(this).attr('data-id')},
+        success: function(response){
+          // Add response in Modal body
+          $('#product_show_model').append(response.html);
+
+
+
+          // Display Modal
+          $('.custom-class-js').modal('show');
+        }
+        });
+    });
+    $(document).on('hidden.bs.modal', '.custom-class-js', function(){
+        $('#product_show_model').children().remove();
+
+    });
+
+
+
+<!--  FOR DELETE PRODUCT MODAL POPUP  -->
+        var csrf_token = '{{csrf_token}}'
+    $('.delete_btn').on('click', function(e){
+        e.preventDefault();
+        var product_name = $(this).attr('data-name');
+        e.preventDefault();
+        $('#warning_delete_id').text("Are you sure you want to delete "+product_name+"?");
+
+        $('#delete_btn').attr({'data-action-url':$(this).attr('data-action-url'),
+                                'data-id':$(this).attr('data-id')});
+        $('.delete-modal-js').modal('show');
+    });
+    $('#delete_btn').on('click', function(e){
+    e.preventDefault();
+    e.stopImmediatePropagation();
+    // AJAX request
+        $.ajax({
+        url: $(this).attr('data-action-url'),
+        type: 'post',
+        data: {'csrfmiddlewaretoken':csrf_token, 'pk': $(this).attr('data-id')},
+        success: function(response){
+            $('#product_card_'+response.id).remove();
+            $('.delete-modal-js').modal('hide');
+        }
+        });
+    });
+
+</script>
+{% endblock %}
+
